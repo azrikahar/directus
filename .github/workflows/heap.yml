@@ -18,5 +18,11 @@ jobs:
           node-version: '16.15'
           cache: npm
 
+      - name: Check free memory
+        run: free -m
+
+      - name: Check current heap limit
+        run: node -e 'console.log(`node heap limit = ${require("v8").getHeapStatistics().heap_size_limit / (1024 * 1024)} Mb`)'
+
       - name: Run
         run: node heap.js
