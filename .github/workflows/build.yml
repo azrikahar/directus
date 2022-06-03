@@ -30,7 +30,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build -- --scope @directus/app
+        run: npm run build -- --scope @directus/shared --scope @directus/app
 
       - name: Cache build artifacts
         uses: actions/cache@v2
