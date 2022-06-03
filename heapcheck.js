@@ -1,5 +1,5 @@
 const field = "heapUsed";
-const TIME_INTERVAL_IN_MSEC = 40;
+const TIME_INTERVAL_IN_MSEC = 1000;
 
 setInterval(() => {
 	const mu = process.memoryUsage();
