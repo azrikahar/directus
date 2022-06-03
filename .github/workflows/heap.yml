@@ -21,6 +21,9 @@ jobs:
       - name: Check free memory
         run: free -m
 
+      - name: Check process memory usage
+        run: node -e 'console.log(require("process").memoryUsage())'
+
       - name: Check current heap limit
         run: node -e 'console.log(`node heap limit = ${require("v8").getHeapStatistics().heap_size_limit / (1024 * 1024)} Mb`)'
 
