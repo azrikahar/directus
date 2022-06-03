@@ -20,4 +20,4 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build -- --scope @directus/shared --scope @directus/extensions-sdk --scope @directus/app
+        run: npm run build -- --scope @directus/shared --scope @directus/format-title --scope @directus/extensions-sdk --scope @directus/app
