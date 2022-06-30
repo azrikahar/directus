@@ -23,7 +23,6 @@ jobs:
           owner: azrikahar
           repo: directus
 
-
       - name: Fail job if no milestones found
         if: ${{ fromJSON(steps.get_milestones.outputs.data)[0] == null }}
         run: exit 1
@@ -38,8 +37,6 @@ jobs:
           issue_number: ${{ github.event.pull_request.number }}
           milestone: ${{ fromJSON(steps.get_milestones.outputs.data)[0].number }}
 
-      - run: 'echo ${{ steps.add_milestone.outputs.data }}'
-
   update_draft_release_notes_and_changelog:
     name: Update draft release notes draft and changelog
     # if: ${{ fromJSON(needs.add_merged_pr_to_milestone.outputs.milestones).length > 0 }}
@@ -51,3 +48,11 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: 'rijkvanzanten/changelog-generator'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate changelog
+        run: ./index.js "${{ fromJSON(needs.add_merged_pr_to_milestone.outputs.milestones)[0].title }}"
+
+      - run: cat "./output/${{ fromJSON(needs.add_merged_pr_to_milestone.outputs.milestones)[0].title }}.md"
