@@ -23,13 +23,14 @@ jobs:
           owner: azrikahar
           repo: directus
 
-      - run: 'echo ${{ github.event.pull_request }}'
-      - run: 'echo ${{ github.event.pull_request.issue_url }}'
+
+      - name: Fail job if no milestones found
+        if: ${{ steps.get_milestones.outputs.data[0] == null }}
+        run: exit 1
 
       - name: Add milestone
         uses: octokit/request-action@v2.x
         id: add_milestone
-        if: ${{ fromJSON(steps.get_milestones.outputs.data).length > 0 }}
         with:
           route: PATCH /repos/{owner}/{repo}/issues/{issue_number}
           owner: azrikahar
@@ -41,7 +42,7 @@ jobs:
 
   update_draft_release_notes_and_changelog:
     name: Update draft release notes draft and changelog
-    if: ${{ fromJSON(needs.add_merged_pr_to_milestone.outputs.milestones).length > 0 }}
+    # if: ${{ fromJSON(needs.add_merged_pr_to_milestone.outputs.milestones).length > 0 }}
     runs-on: ubuntu-latest
     needs:
       - add_merged_pr_to_milestone
