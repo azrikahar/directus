@@ -52,10 +52,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Grant executable permissions
-        run: chmod +x ./index.js
+      # - name: Grant executable permissions
+      #   run: chmod +x ./index.js
 
       - name: Generate changelog
-        run: ./index.js "${{ fromJSON(needs.add_merged_pr_to_milestone.outputs.milestones)[0].title }}"
+        run: node ./index.js "${{ fromJSON(needs.add_merged_pr_to_milestone.outputs.milestones)[0].title }}"
 
       - run: cat "./output/${{ fromJSON(needs.add_merged_pr_to_milestone.outputs.milestones)[0].title }}.md"
