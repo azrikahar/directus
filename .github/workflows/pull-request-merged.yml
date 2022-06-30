@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      milestones: ${{ steps.get_milestones.outputs.data }}
     steps:
       - name: Get milestones
         uses: octokit/request-action@v2.x
@@ -20,6 +22,7 @@ jobs:
           route: GET /repos/{owner}/{repo}/milestones
           owner: azrikahar
           repo: directus
+
       - run: 'echo ${{ steps.get_milestones.outputs.data }}'
       - run: 'echo ${{ github.event.pull_request.issue_url }}'
 
@@ -30,11 +33,12 @@ jobs:
         with:
           route: PATCH ${{ github.event.pull_request.issue_url }}
           milestone: ${{ fromJSON(steps.get_milestones.outputs.data)[0].number }}
+
       - run: 'echo ${{ steps.add_milestone.outputs.data }}'
 
   update_draft_release_notes_and_changelog:
     name: Update draft release notes draft and changelog
-    if: ${{ fromJSON(jobs.add_merged_pr_to_milestone.steps.get_milestones.outputs.data).length > 0 }}
+    if: ${{ fromJSON(needs.add_merged_pr_to_milestone.outputs.milestones).length > 0 }}
     runs-on: ubuntu-latest
     needs:
       - add_merged_pr_to_milestone
