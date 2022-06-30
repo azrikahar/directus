@@ -23,7 +23,6 @@ jobs:
           owner: azrikahar
           repo: directus
 
-      - run: 'echo ${{ steps.get_milestones.outputs.data }}'
       - run: 'echo ${{ github.event.pull_request }}'
       - run: 'echo ${{ github.event.pull_request.issue_url }}'
 
