@@ -24,6 +24,7 @@ jobs:
           repo: directus
 
       - run: 'echo ${{ steps.get_milestones.outputs.data }}'
+      - run: 'echo ${{ github.event.pull_request }}'
       - run: 'echo ${{ github.event.pull_request.issue_url }}'
 
       - name: Add milestone
@@ -31,7 +32,10 @@ jobs:
         id: add_milestone
         if: ${{ fromJSON(steps.get_milestones.outputs.data).length > 0 }}
         with:
-          route: PATCH ${{ github.event.pull_request.issue_url }}
+          route: PATCH /repos/{owner}/{repo}/issues/{issue_number}
+          owner: azrikahar
+          repo: directus
+          issue_number: ${{ github.event.pull_request.number }}
           milestone: ${{ fromJSON(steps.get_milestones.outputs.data)[0].number }}
 
       - run: 'echo ${{ steps.add_milestone.outputs.data }}'
